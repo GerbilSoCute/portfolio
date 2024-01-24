@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fes.mapper.DbScrapMapper">
+	
+
+	<select id="selectSeq" resultType="int">
+	
+		select get_seq('idSeq') from dual;
+		
+	</select>
+	
+	<select id="selectSeq2" resultType="int">
+	
+		select id from seq_it;
+	
+	</select>
+	
+	<insert id="insertId">
+		
+		insert into item_detail(item_id, item_name, item_category3, item_job, job_level, item_icon, item_level,
+		last_modified_date, last_modified_user, first_created_date, first_created_user) 
+		values
+		(#{itemId}, #{itemName}, #{category3}, #{itemJob}, 
+		#{jobLevel}, #{itemImg}, #{itemLevel}, now(), 'FESADMIN', now(), 'FESADMIN')	
+	   
+	</insert>
+	
+	<insert id="insertEd">
+	
+		insert into equipment_detail(item_id, physical_damage, magic_damage, block_strength, block_rate,
+		defence, magic_defence, delay, strength, dexterity, vitality, intelligence, mind, critical_hit,
+		determination, direct_hit_rate, skill_speed, spell_speed, tenacity, piety, materia, relic_wp,
+		last_modified_date, last_modified_user, first_created_date, first_created_user)
+		values
+		(#{itemId}, #{pDamage}, #{mDamage}, #{blockStrength}, #{blockRate},
+		#{defence}, #{mDefence}, #{delay}, #{strength}, #{dexterity}, #{vitality}, #{intelligence}, #{mind}, #{criticalHit},
+		#{determination}, #{directHitRate}, #{skillSpeed}, #{spellSpeed}, #{tenacity}, #{piety}, #{materia}, #{relicWp},
+		now(), 'FESADMIN', now(), 'FESADMIN')
+		
+	</insert>
+	
+	<insert id="insertMd">
+	
+		insert into meals_detail(item_id, vitality_rate, vitality_value, critical_hit_rate, critical_hit_value,
+		determination_rate, determination_value, direct_hit_rate, direct_hit_value, skill_speed_rate, skill_speed_value, spell_speed_rate, spell_speed_value,
+		tenacity_rate, tenacity_value, piety_rate, piety_value,
+		cp_rate, cp_value, gp_rate, gp_value, craftsmanship_rate, craftsmanship_value,
+		control_rate, control_value, perception_rate, perception_value, gathering_rate, gathering_value,
+		last_modified_date, last_modified_user, first_created_date, first_created_user)
+		values
+		(#{itemId}, #{vitRate}, #{vitValue}, #{criRate}, #{criValue},
+		#{detRate}, #{detValue}, #{dirRate}, #{dirValue}, #{sksRate}, #{sksValue}, #{spsRate}, #{spsValue},
+		#{tenRate}, #{tenValue}, #{pieRate}, #{pieValue}, #{cpRate}, #{cpValue}, #{gpRate}, #{gpValue},
+		#{craftRate}, #{craftValue}, #{contRate}, #{contValue}, #{percetRate}, #{percepValue}, #{gathRate}, #{gathValue},
+		now(), 'FESADMIN', now(), 'FESADMIN')
+	
+	</insert>
+	
+	<insert id="insertCt">
+		
+		insert into item_category3(category_id, upper_category_id, category_name,
+		last_modified_date, last_modified_user, first_created_date, first_created_user)
+		select 
+		#{category3}, #{category2}, #{category4}, now(), 'FESADMIN', now(), 'FESADMIN' from dual 
+		where not exists(select category_id from item_category3 where category_id = #{category3})
+		
+	</insert>
+	
+</mapper>  

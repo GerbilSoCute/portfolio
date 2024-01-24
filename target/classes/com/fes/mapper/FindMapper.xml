@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fes.mapper.FindMapper">
+	
+	<select id="getItemList" resultType="com.fes.domain.ItemDetailVO">
+	
+		select 
+			item_id AS itemId
+			, item_name AS itemName
+			, item_category3 AS category3
+			, item_job AS itemJob
+			, job_level AS jobLevel
+			, item_icon AS itemImg
+			, item_level AS itemLevel
+			, last_modified_date AS lastDate
+			, last_modified_user AS lastUser
+			, first_created_date AS firstDate
+			, first_created_user AS firstUser
+		 from item_detail order by item_level DESC
+		 LIMIT #{pageStart}, #{amount};
+	
+	</select>
+	
+	<select id="getItemListCate3" resultType="com.fes.domain.ItemDetailVO">
+	
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemImg
+			, i.item_level AS itemLevel
+			, c.category_id AS categoryId
+			, c.category_name AS categoryName
+			, i.last_modified_date AS lastDate
+			, i.last_modified_user AS lastUser
+			, i.first_created_date AS firstDate
+			, i.first_created_user AS firstUser
+		 from item_detail i
+		 join item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 WHERE item_category3 = #{category3} 
+		 order by item_level DESC
+		 LIMIT #{cri.pageStart}, #{cri.amount};
+	
+	</select>
+	
+	<select id="getItemListCate2" resultType="com.fes.domain.ItemDetailVO">
+	
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemImg
+			, i.item_level AS itemLevel
+			, c.category_id AS categoryId
+			, c.category_name AS categoryName
+			, i.last_modified_date AS lastDate
+			, i.last_modified_user AS lastUser
+			, i.first_created_date AS firstDate
+			, i.first_created_user AS firstUser
+			, g.CATEGORY_ID AS category2
+		 from item_detail i
+		 join item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 join item_category2 g ON c.UPPER_CATEGORY_ID = g.CATEGORY_ID
+		 WHERE g.CATEGORY_ID = #{category2} 
+		 order by item_level DESC
+		 LIMIT #{cri.pageStart}, #{cri.amount};
+	
+	</select>
+	
+	<select id="getItemDetailInfo" resultType="com.fes.domain.ItemEqJoinVO">
+	
+		SELECT I.ITEM_NAME AS itemName
+			,I.ITEM_CATEGORY3 AS itemCategory3
+			,I.ITEM_JOB AS itemJob
+			,I.JOB_LEVEL AS jobLevel
+			,I.ITEM_ICON AS itemIcon
+			,I.ITEM_LEVEL AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		FROM ITEM_DETAIL I
+		JOIN EQUIPMENT_DETAIL E ON I.ITEM_ID = E.ITEM_ID
+		WHERE E.ITEM_ID = #{itemId}
+	
+	</select>
+	
+	<select id="getTotal" resultType="int">
+		SELECT COUNT(*) FROM item_detail
+	</select>
+	
+	<select id="getTotalCate3" resultType="int">
+		SELECT COUNT(*) FROM item_detail i
+		JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		WHERE item_category3 = #{category3}
+	</select>
+	
+	<select id="getTotalCate2" resultType="int">
+		SELECT COUNT(*) FROM item_detail i
+		join item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		join item_category2 g ON c.UPPER_CATEGORY_ID = g.CATEGORY_ID
+		WHERE g.CATEGORY_ID = #{category2} 
+	</select>
+	
+	<select id="getItemDetailCate3" resultType="string">
+		SELECT CATEGORY_NAME
+		FROM item_category3
+		WHERE CATEGORY_ID = #{itemCategory3}
+	</select>
+	
+	<select id="getWeaponCategory2" resultType="String">
+		select category_name AS cateName2
+		from item_category2
+		where category_id = 1
+	</select>
+	
+	<select id="getArmorCategory2" resultType="String">
+		select category_name AS cateName2
+		from item_category2
+		where category_id = 3
+	</select>
+	
+	<select id="getAcceCategory2" resultType="String">
+		select category_name AS cateName2
+		from item_category2
+		where category_id = 4
+	</select>
+	
+	<select id="getWeaponCategory3" resultType="com.fes.domain.CateVO">
+		select category_name AS cateName3
+			  ,category_id AS category3
+		from item_category3
+		where upper_category_id = 1
+	</select>
+	
+	<select id="getArmorCategory3" resultType="com.fes.domain.CateVO">
+		select category_name AS cateName3
+			  ,category_id AS category3
+		from item_category3
+		where upper_category_id = 3
+	</select>
+	
+	<select id="getAcceCategory3" resultType="com.fes.domain.CateVO">
+		select category_name AS cateName3
+			  ,category_id AS category3
+		from item_category3
+		where upper_category_id = 4
+	</select>
+
+</mapper> 
