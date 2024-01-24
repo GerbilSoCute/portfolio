@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fes.mapper.SimMapper">
+
+	<select id="getJobList" resultType="com.fes.domain.JobVO">
+		
+		SELECT JOB_CODE AS code
+			 , JOB_NAME AS name
+			 , JOB_ICON AS icon
+		FROM JOB_LIST
+		
+	</select>
+	
+	<select id="getJobName" resultType="String">
+		
+		select job_name from job_list where job_code = #{jobCode}
+		
+	</select>
+	
+	<select id="getWeaponList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.UPPER_CATEGORY_ID = 1
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+	
+	<select id="getShieldList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_category3 = 11
+		 AND c.UPPER_CATEGORY_ID = 3
+		 AND i.item_job LIKE '%${jobName}%'
+		 ORDER BY 
+		 e.VITALITY DESC
+		 
+	</select>
+	
+	<select id="getHeadList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 34
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+	
+	<select id="getTopList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 35
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+
+	<select id="getHandList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 37
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+	
+	<select id="getBottomsList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 36
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+	
+	<select id="getFootList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 38
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+	
+	<select id="getEarList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 41
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+	
+	<select id="getNeckList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 40
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+	
+	<select id="getArmList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 42
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+		
+		<select id="getFingerList" resultType="com.fes.domain.ItemEqJoinVO">
+		
+		select 
+			i.item_id AS itemId
+			, i.item_name AS itemName
+			, i.item_category3 AS category3
+			, i.item_job AS itemJob
+			, i.job_level AS jobLevel
+			, i.item_icon AS itemIcon
+			, i.item_level AS itemLevel
+			,E.PHYSICAL_DAMAGE AS physicalDamage
+			,E.MAGIC_DAMAGE AS magicDamage
+			,E.BLOCK_STRENGTH AS blockStrength
+			,E.BLOCK_RATE AS blockRate
+			,E.DEFENCE AS defence
+			,E.MAGIC_DEFENCE AS magicDefence
+			,E.DELAY AS delay
+			,E.STRENGTH AS strength
+			,E.DEXTERITY AS dexterity
+			,E.VITALITY AS vitality
+			,E.INTELLIGENCE AS intelligence
+			,E.MIND AS mind
+			,E.CRITICAL_HIT AS criticalHit
+			,E.DETERMINATION AS determination
+			,E.DIRECT_HIT_RATE AS directHitRate
+			,E.SKILL_SPEED AS skillSpeed
+			,E.SPELL_SPEED AS spellSpeed
+			,E.TENACITY AS tenacity
+			,E.PIETY AS piety
+			,E.MATERIA AS materia
+			,E.RELIC_WP AS relicWp
+		 from item_detail i 
+		 JOIN item_category3 c ON i.item_category3 = c.CATEGORY_ID
+		 JOIN equipment_detail e ON i.item_id = e.item_id
+		 where i.job_level BETWEEN ${minLv} AND ${maxLv}
+		 AND i.item_level BETWEEN ${minItemLv} AND ${maxItemLv}
+		 AND i.item_job LIKE '%${jobName}%'
+		 AND c.CATEGORY_ID = 43
+		 ORDER BY 
+		 case when #{jobName} = '나이트' then e.VITALITY end DESC
+			,case when #{jobName} = '전사' then e.VITALITY end DESC
+			,case when #{jobName} = '암흑기사' then e.VITALITY end DESC
+			,case when #{jobName} = '건브레이커' then e.VITALITY end DESC
+			,case when #{jobName} = '몽크' then e.STRENGTH end DESC
+			,case when #{jobName} = '용기사' then e.STRENGTH end DESC
+			,case when #{jobName} = '닌자' then e.STRENGTH end DESC
+			,case when #{jobName} = '사무라이' then e.STRENGTH end DESC
+			,case when #{jobName} = '리퍼' then e.STRENGTH end DESC
+			,case when #{jobName} = '음유시인' then e.DEXTERITY end DESC
+			,case when #{jobName} = '기공사' then e.DEXTERITY end DESC
+			,case when #{jobName} = '무도가' then e.DEXTERITY end DESC
+			,case when #{jobName} = '흑마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '소환사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '적마도사' then e.INTELLIGENCE end DESC
+			,case when #{jobName} = '백마도사' then e.MIND end DESC
+			,case when #{jobName} = '학자' then e.MIND end DESC
+			,case when #{jobName} = '점성술사' then e.MIND end DESC
+			,case when #{jobName} = '현자' then e.MIND end DESC
+		 
+	</select>
+		
+	<select id="getMateria" resultType="int">
+		
+		select 
+		e.materia
+		from equipment_detail e
+		JOIN item_detail i ON i.item_id = e.item_id
+		where e.item_id = ${itemId}
+		
+	</select>
+
+	<select id="getMateriaList" resultType="com.fes.domain.MateriaVO">
+	
+	SELECT 
+	
+		item_id AS itemId
+		,item_name AS itemName
+		,critical_hit AS cri
+		,determination AS det
+		,direct_hit AS dir
+		,skill_speed AS sks
+		,spell_speed AS sps
+		,tenacity AS ten
+		,piety AS pie
+		 FROM materia_detail 
+		 WHERE  item_name LIKE '무략%' 
+		 or item_name LIKE '야망%' 
+		 or item_name LIKE '심안%'
+		 order by critical_hit desc, determination desc, direct_hit desc
+		 
+	
+	</select>
+</mapper>	
